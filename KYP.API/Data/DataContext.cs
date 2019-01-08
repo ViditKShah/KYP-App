@@ -7,6 +7,6 @@ namespace KYP.API.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) {}
 
-        public DbSet<Value> Values; 
+        public DbSet<Value> Values { get; set; }
     }
 }
