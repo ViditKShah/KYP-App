@@ -19,8 +19,6 @@ namespace KYP.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDTO)
         {
-            // validate
-
             userForRegisterDTO.UserName = userForRegisterDTO.UserName.ToLower();
 
             if (await _repo.UserExists(userForRegisterDTO.UserName))
