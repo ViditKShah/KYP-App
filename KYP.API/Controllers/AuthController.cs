@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using KYP.API.Data;
+using KYP.API.DTOs;
 using KYP.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,21 +17,21 @@ namespace KYP.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string userName, string password) 
+        public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDTO)
         {
             // validate
 
-            userName = userName.ToLower();
+            userForRegisterDTO.UserName = userForRegisterDTO.UserName.ToLower();
 
-            if (await _repo.UserExists(userName))
+            if (await _repo.UserExists(userForRegisterDTO.UserName))
                 return BadRequest("UserName already exists!");
 
             var userToCreate = new User() 
             {
-                UserName = userName
+                UserName = userForRegisterDTO.UserName
             };
 
-            var createdUser = await _repo.Register(userToCreate, password);
+            var createdUser = await _repo.Register(userToCreate, userForRegisterDTO.Password);
 
             return StatusCode(201);
         }
