@@ -44,7 +44,7 @@ namespace KYP.API.Data
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
             await _dataContext.Users.AddAsync(user);
             await _dataContext.SaveChangesAsync();
