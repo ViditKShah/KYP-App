@@ -6,9 +6,16 @@ import { LikesComponent } from './likes/likes.component';
 import { AuthGuard } from './_guards/auth.guard';
 
 export const appRoutes: Routes = [
-    {path: 'home', component: HomeComponent},
-    {path: 'mentors', component: MentorsComponent, canActivate: [AuthGuard]},
-    {path: 'messages', component: MessagesComponent},
-    {path: 'likes', component: LikesComponent},
-    {path: '**', redirectTo: 'home', pathMatch: 'full'}
+    {path: '', component: HomeComponent},
+    {
+        path: '',
+        runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard],
+        children: [
+            {path: 'mentors', component: MentorsComponent},
+            {path: 'messages', component: MessagesComponent},
+            {path: 'likes', component: LikesComponent}
+        ]
+    },
+    {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
