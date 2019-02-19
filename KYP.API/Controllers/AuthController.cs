@@ -45,7 +45,7 @@ namespace KYP.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLoginDTO)
         {
-            var userFromRepo = await _repo.Login(userForLoginDTO.UserName.ToLower(), userForLoginDTO.Password);
+            var userFromRepo = await _repo.Login(userForLoginDTO.UserName.ToLower().Trim(), userForLoginDTO.Password);
 
             if (userFromRepo == null)
                 return Unauthorized();

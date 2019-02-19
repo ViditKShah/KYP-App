@@ -28,6 +28,7 @@ export class NavComponent implements OnInit {
   }
 
   logOut() {
+    this.model = {};
     localStorage.removeItem('token');
     this.alertifyService.message('Logged out successfully!');
   }
