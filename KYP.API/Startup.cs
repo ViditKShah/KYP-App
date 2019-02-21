@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using KYP.API.Data;
 using KYP.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,6 +42,7 @@ namespace KYP.API
                         opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     });
             services.AddCors();
+            services.AddAutoMapper();
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IKYPRepository, KYPRepository>();
