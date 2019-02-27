@@ -21,6 +21,8 @@ import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
 import { CardsComponent } from './cards/cards.component';
 import { DetailsComponent } from './details/details.component';
+import { MentorDetailResolver } from './_resolvers/mentor-detail.resolver';
+import { MentorListResolver } from './_resolvers/mentor-list.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -60,7 +62,9 @@ const jwtConfig = {
       ErrorInterceptorProvider,
       AlertifyService,
       AuthGuard,
-      UserService
+      UserService,
+      MentorDetailResolver,
+      MentorListResolver
    ],
    bootstrap: [
       AppComponent

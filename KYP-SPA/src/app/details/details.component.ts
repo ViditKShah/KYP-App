@@ -15,17 +15,9 @@ export class DetailsComponent implements OnInit {
   constructor(private userService: UserService, private alertifyService: AlertifyService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.loadUser();
-  }
-
-  // mentors/4
-  loadUser() {
-    this.userService.getUser(+this.route.snapshot.params['id'])
-        .subscribe((user: User) => {
-          this.user = user;
-        }, error => {
-          this.alertifyService.error(error);
-        });
+    this.route.data.subscribe((data) => {
+      this.user = data['user'];
+    });
   }
 
 }
