@@ -4,6 +4,7 @@ import { MentorsComponent } from './mentors/mentors.component';
 import { MessagesComponent } from './messages/messages.component';
 import { LikesComponent } from './likes/likes.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { DetailsComponent } from './details/details.component';
 
 export const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -13,6 +14,7 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuard],
         children: [
             {path: 'mentors', component: MentorsComponent},
+            {path: 'mentors/:id', component: DetailsComponent},
             {path: 'messages', component: MessagesComponent},
             {path: 'likes', component: LikesComponent}
         ]

@@ -20,10 +20,19 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
 import { CardsComponent } from './cards/cards.component';
+import { DetailsComponent } from './details/details.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
+
+const jwtConfig = {
+   config: {
+      tokenGetter: tokenGetter,
+      whitelistedDomains: ['localhost:5000'],
+      blacklistedRoutes: ['localhost:5000/api/auth']
+   }
+};
 
 @NgModule({
    declarations: [
@@ -34,7 +43,8 @@ export function tokenGetter() {
       MentorsComponent,
       MessagesComponent,
       LikesComponent,
-      CardsComponent
+      CardsComponent,
+      DetailsComponent
    ],
    imports: [
       BrowserModule,
@@ -42,13 +52,7 @@ export function tokenGetter() {
       FormsModule,
       BsDropdownModule.forRoot(),
       RouterModule.forRoot(appRoutes),
-      JwtModule.forRoot({
-         config: {
-            tokenGetter: tokenGetter,
-            whitelistedDomains: ['localhost:5000'],
-            blacklistedRoutes: ['localhost:5000/api/auth']
-         }
-      })
+      JwtModule.forRoot(jwtConfig)
    ],
    providers: [
       AuthService,
