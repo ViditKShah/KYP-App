@@ -18,6 +18,7 @@ import { LikesComponent } from './likes/likes.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
+import { CardsComponent } from './cards/cards.component';
 
 @NgModule({
    declarations: [
@@ -27,7 +28,8 @@ import { UserService } from './_services/user.service';
       HomeComponent,
       MentorsComponent,
       MessagesComponent,
-      LikesComponent
+      LikesComponent,
+      CardsComponent
    ],
    imports: [
       BrowserModule,
