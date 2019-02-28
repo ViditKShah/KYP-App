@@ -24,6 +24,8 @@ import { CardsComponent } from './cards/cards.component';
 import { DetailsComponent } from './details/details.component';
 import { MentorDetailResolver } from './_resolvers/mentor-detail.resolver';
 import { MentorListResolver } from './_resolvers/mentor-list.resolver';
+import { EditComponent } from './edit/edit.component';
+import { MentorEditResolver } from './_resolvers/mentor-edit.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -47,7 +49,8 @@ const jwtConfig = {
       MessagesComponent,
       LikesComponent,
       CardsComponent,
-      DetailsComponent
+      DetailsComponent,
+      EditComponent
    ],
    imports: [
       BrowserModule,
@@ -66,7 +69,8 @@ const jwtConfig = {
       AuthGuard,
       UserService,
       MentorDetailResolver,
-      MentorListResolver
+      MentorListResolver,
+      MentorEditResolver
    ],
    bootstrap: [
       AppComponent
