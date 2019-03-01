@@ -26,6 +26,7 @@ import { MentorDetailResolver } from './_resolvers/mentor-detail.resolver';
 import { MentorListResolver } from './_resolvers/mentor-list.resolver';
 import { EditComponent } from './edit/edit.component';
 import { MentorEditResolver } from './_resolvers/mentor-edit.resolver';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -70,7 +71,8 @@ const jwtConfig = {
       UserService,
       MentorDetailResolver,
       MentorListResolver,
-      MentorEditResolver
+      MentorEditResolver,
+      PreventUnsavedChanges
    ],
    bootstrap: [
       AppComponent
