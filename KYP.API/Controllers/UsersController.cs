@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using KYP.API.Data;
@@ -37,5 +39,18 @@ namespace KYP.API.Controllers
             return Ok(userToReturn);
         }
 
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> UpdateUser(int userId, UserForUpdateDTO userForUpdateDto)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var userFromRepo = await _repo.GetUser(userId);
+            _mapper.Map(userForUpdateDto, userFromRepo);
+            if (await _repo.SaveAll())
+                return NoContent();
+            
+            throw new Exception($"Updating user {userId} failed on save");
+        }
     }
 }
