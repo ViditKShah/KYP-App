@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KYP.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,18 @@ namespace KYP.API.Data
             _dataContext.Remove(entity);
         }
 
-        public async Task<Photo> GetPhoto(int userId)
+        public async Task<Photo> GetMainPhoto(int userId)
+        {
+            var mainPhoto = await _dataContext.Photos
+                .Where(u => u.UserId == userId)
+                .FirstOrDefaultAsync(p => p.IsMain);
+            return mainPhoto;
+        }
+
+        public async Task<Photo> GetPhoto(int photoId)
         {
             var photo = await _dataContext.Photos
-                .FirstOrDefaultAsync(p => p.Id == userId);
+                .FirstOrDefaultAsync(p => p.Id == photoId);
             
             return photo;
         }

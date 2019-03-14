@@ -39,10 +39,10 @@ namespace KYP.API.Controllers
             _cloudinary = new Cloudinary(acc);
         }
 
-        [HttpGet("{id}", Name = "GetPhoto")]
-        public async Task<IActionResult> GetPhoto(int userId)
+        [HttpGet("{photoId}", Name = "GetPhoto")]
+        public async Task<IActionResult> GetPhoto(int photoId)
         {
-            var photoFromRepo = await _repo.GetPhoto(userId);
+            var photoFromRepo = await _repo.GetPhoto(photoId);
             var photo = _mapper.Map<PhotoForReturnDTO>(photoFromRepo);
             return Ok(photo);
         }
@@ -87,7 +87,34 @@ namespace KYP.API.Controllers
                 var photoToReturn = _mapper.Map<PhotoForReturnDTO>(photo);
                 return CreatedAtRoute("GetPhoto", new {id = photo.Id}, photoToReturn);
             }
-            return BadRequest("Could not add the photo");
+            return BadRequest("Could not add the photo!");
+        }
+
+        [HttpPost("{photoId}/setMain")]
+        public async Task<IActionResult> SetMainPhoto(int userId, int photoId) 
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var userFromRepo = await _repo.GetUser(userId);
+            
+            if (!userFromRepo.Photos.Any(p => p.Id == photoId))
+                return Unauthorized();
+
+            var photoFromRepo = await _repo.GetPhoto(photoId);
+
+            if (photoFromRepo.IsMain) 
+                return BadRequest("This is already the main photo!");
+
+            var currentMainPhoto = await _repo.GetMainPhoto(userId);
+            currentMainPhoto.IsMain = false;
+
+            photoFromRepo.IsMain = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+            
+            return BadRequest("Could not set the photo as the main photo!");
         }
     }
 }

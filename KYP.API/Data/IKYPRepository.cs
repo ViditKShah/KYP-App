@@ -11,6 +11,7 @@ namespace KYP.API.Data
          Task<bool> SaveAll();
          Task<IEnumerable<User>> GetUsers();
          Task<User> GetUser(int userId);
-         Task<Photo> GetPhoto(int userId);
+         Task<Photo> GetPhoto(int photoId);
+         Task<Photo> GetMainPhoto(int userId);
     }
 }
