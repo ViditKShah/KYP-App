@@ -23,9 +23,19 @@ namespace KYP.API.Data
             _dataContext.Remove(entity);
         }
 
+        public async Task<Photo> GetPhoto(int userId)
+        {
+            var photo = await _dataContext.Photos
+                .FirstOrDefaultAsync(p => p.Id == userId);
+            
+            return photo;
+        }
+
         public async Task<User> GetUser(int userId)
         {
-            var user = await _dataContext.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _dataContext.Users.Include(p => p.Photos)                  
+                .FirstOrDefaultAsync(u => u.Id == userId);
+            
             return user;
         }
 
@@ -39,5 +49,7 @@ namespace KYP.API.Data
         {
             return await _dataContext.SaveChangesAsync() > 0;
         }
+
+        
     }
 }
