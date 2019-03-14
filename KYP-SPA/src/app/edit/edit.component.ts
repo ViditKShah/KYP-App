@@ -42,4 +42,8 @@ export class EditComponent implements OnInit {
         });
   }
 
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
+  }
+
 }
