@@ -85,7 +85,7 @@ namespace KYP.API.Controllers
             if (await _repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDTO>(photo);
-                return CreatedAtRoute("GetPhoto", new {id = photo.Id}, photoToReturn);
+                return CreatedAtRoute("GetPhoto", new {photoId = photo.Id}, photoToReturn);
             }
             return BadRequest("Could not add the photo!");
         }
@@ -115,6 +115,42 @@ namespace KYP.API.Controllers
                 return NoContent();
             
             return BadRequest("Could not set the photo as the main photo!");
+        }
+
+        [HttpDelete("{photoId}")]
+        public async Task<IActionResult> DeletePhoto(int userId, int photoId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var userFromRepo = await _repo.GetUser(userId);
+            
+            if (!userFromRepo.Photos.Any(p => p.Id == photoId))
+                return Unauthorized();
+
+            var photoFromRepo = await _repo.GetPhoto(photoId);
+
+            if (photoFromRepo.IsMain) 
+                return BadRequest("You cannot delete the main photo!");
+
+            if (photoFromRepo.PublicID != null)
+            {
+                var deleteParams = new DeletionParams(photoFromRepo.PublicID);
+
+                var cloudinaryResult = _cloudinary.Destroy(deleteParams);
+
+                if (cloudinaryResult.Result == "ok")
+                    _repo.Delete(photoFromRepo);
+            }
+            else
+            {
+                _repo.Delete(photoFromRepo);
+            }
+
+            if (await _repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to delete the photo!");
         }
     }
 }
