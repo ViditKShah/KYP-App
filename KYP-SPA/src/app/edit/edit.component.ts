@@ -13,6 +13,7 @@ import { AuthService } from '../_services/auth.service';
 })
 export class EditComponent implements OnInit {
   user: User;
+  photoUrl: string;
 
   @ViewChild('editForm') editForm: NgForm;
   @HostListener('window:beforeunload', ['$event'])
@@ -30,6 +31,8 @@ export class EditComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data['user'];
     });
+    this.authService.currentPhotoUrl
+        .subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
   updateUser() {
@@ -42,7 +45,7 @@ export class EditComponent implements OnInit {
         });
   }
 
-  updateMainPhoto(photoUrl) {
+  updateMainPhoto(photoUrl: string) {
     this.user.photoUrl = photoUrl;
   }
 
