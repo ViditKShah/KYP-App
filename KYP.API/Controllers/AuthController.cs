@@ -35,14 +35,13 @@ namespace KYP.API.Controllers
             if (await _repo.UserExists(userForRegisterDTO.UserName))
                 return BadRequest("UserName already exists!");
 
-            var userToCreate = new User()
-            {
-                UserName = userForRegisterDTO.UserName
-            };
-
+            var userToCreate = _mapper.Map<User>(userForRegisterDTO);
             var createdUser = await _repo.Register(userToCreate, userForRegisterDTO.Password);
+            var userToReturn = _mapper.Map<UserForDetailedDTO>(createdUser);
 
-            return StatusCode(201);
+            return CreatedAtRoute("GetUser",
+                new {controller = "Users", userId = createdUser.Id},
+                userToReturn);
         }
 
         [HttpPost("login")]
