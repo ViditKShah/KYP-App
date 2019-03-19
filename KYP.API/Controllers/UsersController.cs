@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using KYP.API.Data;
 using KYP.API.DTOs;
+using KYP.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KYP.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
