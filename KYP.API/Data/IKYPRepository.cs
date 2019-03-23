@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using KYP.API.Helpers;
 using KYP.API.Models;
 
 namespace KYP.API.Data
@@ -9,7 +10,7 @@ namespace KYP.API.Data
          void Add<T>(T entity) where T:class;
          void Delete<T>(T entity) where T:class;
          Task<bool> SaveAll();
-         Task<IEnumerable<User>> GetUsers();
+         Task<PagedList<User>> GetUsers(UserParams userParams);
          Task<User> GetUser(int userId);
          Task<Photo> GetPhoto(int photoId);
          Task<Photo> GetMainPhoto(int userId);

@@ -26,10 +26,15 @@ namespace KYP.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _repo.GetUsers();
+            var users = await _repo.GetUsers(userParams);
+
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDTO>>(users);
+
+            Response.AddPagination(users.CurrentPage, users.PageSize, 
+                users.TotalItems, users.TotalPages);
+
             return Ok(usersToReturn);
         }
 
@@ -37,7 +42,9 @@ namespace KYP.API.Controllers
         public async Task<IActionResult> GetUser(int userId)
         {
             var user = await _repo.GetUser(userId);
+
             var userToReturn = _mapper.Map<UserForDetailedDTO>(user);
+            
             return Ok(userToReturn);
         }
 
@@ -48,7 +55,9 @@ namespace KYP.API.Controllers
                 return Unauthorized();
             
             var userFromRepo = await _repo.GetUser(userId);
+            
             _mapper.Map(userForUpdateDto, userFromRepo);
+
             if (await _repo.SaveAll())
                 return NoContent();
             
