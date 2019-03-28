@@ -6,6 +6,7 @@ using AutoMapper;
 using KYP.API.Data;
 using KYP.API.DTOs;
 using KYP.API.Helpers;
+using KYP.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,6 +75,34 @@ namespace KYP.API.Controllers
                 return NoContent();
             
             throw new Exception($"Updating user {userId} failed on save");
+        }
+
+        [HttpPost("{userId}/like/{recipientId}")]
+        public async Task<IActionResult> LikerUser(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var like = await _repo.GetLike(userId, recipientId);
+
+            if (like != null)
+                return BadRequest("You already liked the user!");
+            
+            if (await _repo.GetUser(recipientId) == null)
+                return NotFound();
+            
+            like = new Like
+            {
+                LikerId = userId,
+                LikeeId = recipientId
+            };
+
+            _repo.Add<Like>(like);
+
+            if (await _repo.SaveAll())
+                return Ok();
+            
+            return BadRequest("Failed to like user!");
         }
     }
 }

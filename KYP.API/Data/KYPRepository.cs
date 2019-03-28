@@ -26,6 +26,13 @@ namespace KYP.API.Data
             _dataContext.Remove(entity);
         }
 
+        public async Task<Like> GetLike(int userId, int recipientId)
+        {
+            return await _dataContext.Likes
+                .FirstOrDefaultAsync(u => u.LikerId == userId && 
+                u.LikeeId == recipientId);
+        }
+
         public async Task<Photo> GetMainPhoto(int userId)
         {
             var mainPhoto = await _dataContext.Photos
