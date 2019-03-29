@@ -10,6 +10,7 @@ import { MentorListResolver } from './_resolvers/mentor-list.resolver';
 import { EditComponent } from './edit/edit.component';
 import { MentorEditResolver } from './_resolvers/mentor-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { ListsResolver } from './_resolvers/lists.resolver';
 
 export const appRoutes: Routes = [
     {path: '', component: HomeComponent},
@@ -26,7 +27,8 @@ export const appRoutes: Routes = [
                 resolve: {user: MentorEditResolver},
                 canDeactivate: [PreventUnsavedChanges]},
             {path: 'messages', component: MessagesComponent},
-            {path: 'likes', component: LikesComponent}
+            {path: 'likes', component: LikesComponent,
+                resolve: {users: ListsResolver}}
         ]
     },
     {path: '**', redirectTo: '', pathMatch: 'full'}

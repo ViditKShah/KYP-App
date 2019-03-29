@@ -30,6 +30,7 @@ import { EditComponent } from './edit/edit.component';
 import { MentorEditResolver } from './_resolvers/mentor-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotosComponent } from './photos/photos.component';
+import { ListsResolver } from './_resolvers/lists.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -82,6 +83,7 @@ const jwtConfig = {
       MentorDetailResolver,
       MentorListResolver,
       MentorEditResolver,
+      ListsResolver,
       PreventUnsavedChanges
    ],
    bootstrap: [
