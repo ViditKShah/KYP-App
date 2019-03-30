@@ -42,6 +42,22 @@ namespace KYP.API.Data
             return mainPhoto;
         }
 
+        public async Task<Message> GetMessage(int messageId)
+        {
+            return await _dataContext.Messages
+                .FirstOrDefaultAsync(m => m.Id == messageId);
+        }
+
+        public Task<PagedList<Message>> GetMessagesForUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Photo> GetPhoto(int photoId)
         {
             var photo = await _dataContext.Photos
