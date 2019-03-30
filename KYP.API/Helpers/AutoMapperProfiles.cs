@@ -28,6 +28,8 @@ namespace KYP.API.Helpers
             CreateMap<Photo, PhotoForReturnDTO>();
             CreateMap<PhotoForCreationDTO, Photo>();
             CreateMap<UserForRegisterDTO, User>();
+            CreateMap<MessageForCreationDTO, Message>();
+            CreateMap<Message, MessageForCreationDTO>();
         }
     }
 }
