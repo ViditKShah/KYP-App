@@ -48,11 +48,6 @@ namespace KYP.API.Data
                 .FirstOrDefaultAsync(m => m.Id == messageId);
         }
 
-        public Task<PagedList<Message>> GetMessagesForUser()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
         {
             var messages = _dataContext.Messages
@@ -85,9 +80,18 @@ namespace KYP.API.Data
                 messageParams.PageNumber, messageParams.PageSize);
         }
 
-        public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        public async Task<IEnumerable<Message>> GetMessageThread(int userId, 
+            int recipientId)
         {
-            throw new NotImplementedException();
+             var messages = await _dataContext.Messages
+                .Include(u => u.Sender).ThenInclude(p => p.Photos)
+                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                .Where(m => m.RecipientId == userId && m.SenderId == recipientId ||
+                    m.RecipientId == recipientId && m.SenderId == userId)
+                .OrderByDescending(m => m.DateSent)
+                .ToListAsync();
+
+            return messages;
         }
 
         public async Task<Photo> GetPhoto(int photoId)
