@@ -32,6 +32,7 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotosComponent } from './photos/photos.component';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
+import { ThreadsComponent } from './threads/threads.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -58,7 +59,8 @@ const jwtConfig = {
       DetailsComponent,
       EditComponent,
       PhotosComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      ThreadsComponent
    ],
    imports: [
       BrowserModule,
