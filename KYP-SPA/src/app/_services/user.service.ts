@@ -103,4 +103,8 @@ export class UserService {
       '/messages/thread/' + recipientId);
   }
 
+  sendMessage(userId: number, message: Message) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages', message);
+  }
+
 }
