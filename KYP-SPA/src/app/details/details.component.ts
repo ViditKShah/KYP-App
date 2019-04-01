@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-details',
@@ -11,15 +13,24 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gal
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent implements OnInit {
+  @ViewChild('memberTabs') memberTabs: TabsetComponent;
+
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private userService: UserService, private alertifyService: AlertifyService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService,
+    private alertifyService: AlertifyService, private route: ActivatedRoute,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.user = data['user'];
+    });
+
+    this.route.queryParams.subscribe(params => {
+      const selectedTab = params['tab'];
+      this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
     });
 
     this.galleryOptions = [
@@ -47,6 +58,19 @@ export class DetailsComponent implements OnInit {
       });
     }
     return imageUrls;
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
+  }
+
+  sendLike(recipientId: number) {
+    this.userService.sendLike(this.authService.decodedToken.nameid, recipientId)
+        .subscribe(data => {
+          this.alertifyService.success('You have liked ' + this.user.knownAs);
+        }, error => {
+          this.alertifyService.error(error);
+        });
   }
 
 }
