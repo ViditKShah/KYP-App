@@ -104,11 +104,18 @@ export class UserService {
   }
 
   sendMessage(userId: number, message: Message) {
-    return this.http.post(this.baseUrl + 'users/' + userId + '/messages', message);
+    return this.http.post(this.baseUrl + 'users/' + userId +
+      '/messages', message);
   }
 
   deleteMessage(messageId: number, userId: number) {
-    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId, {});
+    return this.http.post(this.baseUrl + 'users/' + userId +
+      '/messages/' + messageId, {});
+  }
+
+  markAsRead(userId: number, messageId: number) {
+    this.http.post(this.baseUrl + 'users/' + userId +
+      '/messages/' + messageId + '/read', {}).subscribe();
   }
 
 }
