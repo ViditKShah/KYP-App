@@ -81,7 +81,9 @@ namespace KYP.API.Controllers
         public async Task<IActionResult> CreateMessage(int userId, 
             MessageForCreationDTO messageForCreationDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            var sender = await _repo.GetUser(userId);
+
+            if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
             
             messageForCreationDto.SenderId = userId;
@@ -95,11 +97,13 @@ namespace KYP.API.Controllers
 
             _repo.Add(message);
 
-            var messageToReturn = _mapper.Map<MessageForCreationDTO>(message);
+            if (await _repo.SaveAll()) 
+            {
+                var messageToReturn = _mapper.Map<MessageToReturnDTO>(message);
 
-            if (await _repo.SaveAll())
                 return CreatedAtRoute("GetMessage", 
                     new {messageId = message.Id}, messageToReturn);
+            }
             
             throw new Exception("Creating the message failed on save!");
         }

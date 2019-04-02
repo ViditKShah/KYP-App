@@ -22,4 +22,5 @@
 .card-body {
     overflow-y: scroll;
     height: 400px;
+    padding-top: 0px !important;
 }
